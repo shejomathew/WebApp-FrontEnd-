@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta lang="en" charset="UTF-8">
+    <link rel="stylesheet" href="loginstyle.css">
+    <script>
+        
+        var Database_Name = 'KitchenStory';
+        var Version = 1.0;
+        var Text_Description = 'My First Web-SQL Example';
+        var Database_Size = 2 * 1024 * 1024;
+        var dbObj = openDatabase(Database_Name, Version, Text_Description, Database_Size);
+        dbObj.transaction(function (tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Admin_Login (email, password)');
+            // tx.executeSql('insert into Admin_Login(email, password) values("admin","password")');
+        });
+
+        var emailDb = "";
+        var passwordDb = "";
+		//function to view admin credention
+        dbObj.transaction(function (tx) {
+            tx.executeSql('SELECT * FROM Admin_Login', [], function (tx, results) {
+                emailDb = results.rows.item(1).email;
+                passwordDb = results.rows.item(1).password;
+
+
+            }, null);
+        });
+		//function to validate admin credentials
+        function validate() {
+            var emailInput = document.getElementById("email").value;
+            var passwordInput = document.getElementById("password").value;
+
+            if (emailDb == emailInput && passwordDb == passwordInput) {
+                window.location.replace("admin.html");
+
+                // return false;
+            } else {
+                alert("Invalid usrname or password")
+                window.location.replace("adminlogin.html");
+            }
+        }
+
+    </script>
+
+    <title>Kitchen Stroy</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-container">
+            <header>
+                <div class="logo">Welcome To Kitchen Story 🥘</div>
+            </header>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="adminlogin.html">ADMIN LOGIN</a></li>
+
+                </ul>
+            </nav>
+
+        </div>
+        <div class="admincontainer">
+            <form id="form">
+                <label for="email">Username : </label>
+                <input type="email" class="form-control null" id="email" name="email" placeholder="Enter Username">
+                <br><br>
+                <label for="password">Password : </label>
+                <input type="password" class="form-control null" id="password" name="password" placeholder="Password">
+                <br><br>
+                <button type="submit" class="btn btn-primary" onclick="validate()">Login</button><br><br>
+                <button><a href="changepassword.html">Forgot Password</a></button>
+
+
+            </form>
+        </div>
+        <div class="footer-container clearfix">
+
+            <footer>
+                <div>&copy copyright 2021 kitchenstory</div>
+                <div>More info</div>
+            </footer>
+        </div>
+        
+    </div>
+</body>
+
+</html>

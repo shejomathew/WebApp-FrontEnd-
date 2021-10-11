@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Open DataBase</title>
+    <link rel="stylesheet" href="loginstyle.css">
+
+    <script>
+        var Database_Name = 'KitchenStory';
+        var Version = 1.0;
+        var Text_Description = 'My First Web-SQL Example';
+        var Database_Size = 2 * 1024 * 1024;
+        var dbObj = openDatabase(Database_Name, Version, Text_Description, Database_Size);
+		//to delete food item
+        function deleteName() {
+            var name = document.getElementById("name").value;
+            //check to ensure the mydb object has been created
+            if (dbObj) {
+                //Get all the names from the database with a select statement, set outputNameList as the callback function for the executeSql command
+                dbObj.transaction(function (t) {
+                    t.executeSql("DELETE FROM Food_Menu WHERE name = ? ", [name]);
+                    alert("Item Deleted Successfully!!!")
+                });
+            } else {
+                alert("db not found, your browser does not support web sql!");
+            }
+        }
+		//to fetch food items
+        dbObj.transaction(function (tx) {
+            tx.executeSql('SELECT * FROM Food_Menu', [], function (tx, results) {
+                var len = results.rows.length, i;
+                var str = '';
+                for (i = 0; i < len; i++) {
+                    str += "<tr>";
+                    str += "<td>" + results.rows.item(i).id + "</td>";
+                    str += "<td>" + results.rows.item(i).category + "</td>";
+                    str += "<td>" + results.rows.item(i).name + "</td>";
+                    str += "<td>" + results.rows.item(i).price + "</td>";
+                    str += "</tr>";
+                    document.getElementById("tblGrid").innerHTML += str;
+                    str = '';
+                }
+            }, null);
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-container">
+            <header>
+                <div class="logo">Welcome To Kitchen Story 🥘</div>
+            </header>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="admin.html">ADMIN-HOME</a></li>
+                    <li><a href="adminlogin.html">LOGOUT</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="admindelete">
+            <form id="form">
+                <table>
+                    <tr>
+                        <td>Name: </td>
+                        <td><input type="text" id="name" /></td>
+                        <td><button id="btnInsert" onclick="deleteName()">Delete</button></td>
+                    </tr>
+                    <tr>
+                        
+                    </tr>
+                </table><br>
+
+                <table id="tblGrid" cellpadding="10px" cellspacing="0" border="1">
+                    <tr style="background-color:black;color:white;font-size:18px;">
+                        <td>
+                            ID
+                        </td>
+                        <td>
+                            Category
+                        </td>
+                        <td>
+                            Name
+                        </td>
+                        <td>
+                            Price
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div class="footer-container clearfix">
+
+            <footer>
+                <div>&copy copyright 2021 kitchenstory</div>
+                <div>More info</div>
+            </footer>
+        </div>
+        
+    </div>
+</body>
+
+</html>

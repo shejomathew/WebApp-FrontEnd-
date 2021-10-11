@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Open DataBase</title>
+    <link rel="stylesheet" href="loginstyle.css">
+
+    <script>
+        var Database_Name = 'KitchenStory';
+        var Version = 1.0;
+        var Text_Description = 'My First Web-SQL Example';
+        var Database_Size = 2 * 1024 * 1024;
+        var dbObj = openDatabase(Database_Name, Version, Text_Description, Database_Size);
+        dbObj.transaction(function (tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Food_Menu (id unique, category, name, price)');
+        });
+		//function to insert food item
+        function Insert() {
+            var id = document.getElementById("tbID").value;
+            var name = document.getElementById("tbName").value;
+            var price = document.getElementById("tbPrice").value;
+            var category = document.getElementById("tbCategory").value;
+            dbObj.transaction(function (tx) {
+                tx.executeSql('insert into Food_Menu(id, category, name, price) values(' + id + ',"' + category + '","' + name + '","' + price + '")');
+                alert("Added the item Successfully!");
+            });
+        }
+		//function to view food item
+        dbObj.transaction(function (tx) {
+            tx.executeSql('SELECT * FROM Food_Menu', [], function (tx, results) {
+                var len = results.rows.length, i;
+                var str = '';
+                for (i = 0; i < len; i++) {
+                    str += "<tr>";
+                    str += "<td>" + results.rows.item(i).id + "</td>";
+                    str += "<td>" + results.rows.item(i).category + "</td>";
+                    str += "<td>" + results.rows.item(i).name + "</td>";
+                    str += "<td>" + results.rows.item(i).price + "</td>";
+                    str += "</tr>";
+                    document.getElementById("tblGrid").innerHTML += str;
+                    str = '';
+                }
+            }, null);
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-container">
+            <header>
+                <div class="logo">Welcome To Kitchen Story 🥘</div>
+            </header>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="admin.html">ADMIN-HOME</a></li>
+                    <li><a href="adminlogin.html">LOGOUT</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="addadmin">
+            <form id="form">
+                <table>
+                    <tr>
+                        <td>ID:</td>
+                        <td><input type="text" id="tbID" /></td>
+                    </tr>
+                    <tr>
+                        <td>Category:</td>
+                        <td><input type="text" id="tbCategory" /></td>
+                    </tr>
+                    <tr>
+                        <td>Name:</td>
+                        <td><input type="text" id="tbName" /></td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td><input type="number" id="tbPrice" /></td>
+                    </tr>
+                    <tr>
+                        <td><button id="btnInsert" onclick="Insert()">Insert</button></td>
+                    </tr>
+                </table><br>
+
+                <table id="tblGrid" cellpadding="10px" cellspacing="0" border="1">
+                    <tr style="background-color:black;color:white;font-size:18px;">
+                        <td>
+                            ID
+                        </td>
+                        <td>
+                            Category
+                        </td>
+                        <td>
+                            Name
+                        </td>
+                        <td>
+                            Price
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div class="footer-container clearfix">
+
+            <footer>
+                <div>(c) copyright 2021 kitchenstory</div>
+                <div>More info</div>
+            </footer>
+        </div>
+        
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta lang="en" charset="UTF-8">
+    <link rel="stylesheet" href="loginstyle.css">
+
+    <script type="text/javascript">
+        var subcategory = {
+            Breakfast: ["Dosa", "Poha", "Idli", "Aalu Paratha", "Upma", "Omlet"],
+            Biryani: ["Chicken Birayni", "Mutton Biryani", "Keema Biryani", "Fish Biryani", "Paneer Biryani", "Aalu Biryani"],
+            Curry: ["Chicken Curry", "Mutton Curry", "Fish Curry", "Egg Curry", "Paneer Curry", "Mashroom Curry"],
+            Cake: ["Chocolate Cake", "Vanilla Cake", "Black Forest", "White Forest", "Pineapple Cake", "RedVelvet Cake"],
+            IceCreams: ["Vanilla", "Rajbhog", "Butterscotch", "Chocolate", "Blackforest", "Strawberry"],
+            Sweets: ["Kajukatli", "Rasgulla", "Gulab Jamun", "Malai Roll", "Laddu", "Rasmalai"]
+
+        }
+
+        function makeSubmenu(value) {
+            if (value.length == 0) document.getElementById("categorySelect").innerHTML = "<option></option>";
+            else {
+                var citiesOptions = "";
+                for (categoryId in subcategory[value]) {
+                    citiesOptions += "<option>" + subcategory[value][categoryId] + "</option>";
+                }
+                document.getElementById("categorySelect").innerHTML = citiesOptions;
+            }
+        }
+
+        function displaySelected() {
+            var country = document.getElementById("category").value;
+            var city = document.getElementById("categorySelect").value;
+            alert(country + "\n" + city);
+        }
+
+        function resetSelection() {
+            document.getElementById("category").selectedIndex = 0;
+            document.getElementById("categorySelect").selectedIndex = 0;
+        }
+
+        function search() {
+            var Database_Name = 'KitchenStory';
+            var Version = 1.0;
+            var Text_Description = 'My First Web-SQL Example';
+            var Database_Size = 2 * 1024 * 1024;
+            var dbObj = openDatabase(Database_Name, Version, Text_Description, Database_Size);
+            var name = document.getElementById("categorySelect").value;
+
+            dbObj.transaction(function (tx) {
+                tx.executeSql('SELECT * FROM Food_Menu where name = ? ', [name], function (tx, results) {
+                    var len = results.rows.length, i;
+                    var qty = document.getElementById("quantity").value;
+                    var str = '';
+                    // var tax = 0.1 * results.rows.item(1).price;
+
+                    for (i = 0; i < len; i++) {
+                        str += "<tr>";
+                        str += "<td>" + results.rows.item(i).id + "</td>";
+                        str += "<td>" + results.rows.item(i).category + "</td>";
+                        str += "<td>" + results.rows.item(i).name + "</td>";
+                        str += "<td>" + results.rows.item(i).price + "</td>";
+                        str += "<td>" + qty + "</td>";
+                        str += "<td>" + 100 + "</td>";
+                        str += "<td>" + 0.1 * results.rows.item(i).price + "</td>";
+                        str += "<td>" + (qty * results.rows.item(i).price + 100 + 0.1 * results.rows.item(i).price) + "</td>";
+                        str += "</tr>";
+                        document.getElementById("tblGrid").innerHTML += str;
+                        str = '';
+                    }
+                }, null);
+            });
+        }
+
+        function validate() {
+
+            var category = document.getElementById("category").value;
+            if (category == "" ) {
+                alert("Please select a value!!");
+            } else {
+                window.location.replace("booking.html")
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-container">
+            <header>
+                <div class="logo">Welcome To Kitchen Story 🥘</div>
+            </header>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="adminlogin.html">ADMIN LOGIN</a></li>
+
+                </ul>
+            </nav>
+
+        </div>
+        <div class="formcontainer" style="width: 60%;">
+            <form id="searchform">
+                <div class="round">
+                    <label for="category">Category</label>
+
+                    <select id="category" size="1" onchange="makeSubmenu(this.value)">
+                        <option value="" disabled selected>Choose Category</option>
+                        <option>Breakfast</option>
+                        <option>Biryani</option>
+                        <option>Curry</option>
+                        <option>Cake</option>
+                        <option>IceCreams</option>
+                        <option>Sweets</option>
+
+                    </select>
+
+                    <label for="name">Name</label>
+
+                    <select id="categorySelect" size="1">
+                        <option value="" disabled selected>Choose Subcategory</option>
+                    </select><br>
+
+                    <label>Quantity<input type="number" id="quantity" /></label>
+
+
+                </div>
+
+            </form>
+            <button type="submit" onclick="search()" id="searchbutton">Search</button>
+        </div>
+
+        <div class="fetchTable">
+            <form id="form">
+                <table id="tblGrid" cellpadding="10px" cellspacing="0" border="1" align="center">
+                    <tr style="background-color:black;color:white;font-size:18px;">
+                        <th scope="col">ID</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Delivery Charges</th>
+                        <th scope="col">GST</th>
+                        <th scope="col">Total Price in "&#x20B9;"</th>
+
+                    </tr>
+                </table><br><br>
+
+                <button type="button" class="button" onclick="validate()">Proceed To Pay</button>
+
+            </form>
+
+            <!-- <form id="paymentform">
+                <label>Payment Receipt : </label><br><br>
+                <label for="price">Item Total: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" id="price" value=""><br>
+
+                <label for="deliverycharges">Delivery Charges: </label>&nbsp;
+                <input type="text" id="deliverycharges" value="&#x20B9;100"><br>
+
+                <label for="tax">Tax:
+                </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" id="tax" value=""><br>
+
+                <label>Grand Total: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" id="total"><br>
+
+                <button type="submit"><a href="booking.html">Proceed To Pay</a></button>
+            </form> -->
+
+        </div>
+
+        <div class="footer-container clearfix">
+
+            <footer>
+                <div>&copy copyright 2021 kitchenstory</div>
+                <div>More info</div>
+            </footer>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Otomanopee+One&display=swap');
+
+body {
+            font-family: 'Otomanopee One', sans-serif;
+}
+
+h1 {
+    font-size: 3em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-style: italic ;
+    font-weight: bold;
+}
+
+p::first-letter {
+    font-size: 1.5em;
+    color: rgb(51, 46, 19);
+}
+
+.logo {
+    font-size: 3em;
+}
+
+.container {
+    width: 1080px;
+    margin: auto;
+    background-color: rgb(197, 170, 129);
+    padding: 10px;
+}
+
+nav {
+    background-color: #333;
+    width: 100%;
+}
+
+nav ul li {
+    list-style-type: none;
+    display: inline-block;
+    width: 200px;
+
+}
+
+nav a {
+    display: block;
+    text-decoration: none;
+    color: rgb(226, 196, 74);
+    text-align: center;
+    padding: 10px 0;
+}
+
+nav a:hover {
+
+    background-color: red;
+    color: black;
+}
+
+.header-container header {
+    background-color: brown;
+    color: white;
+    text-transform: uppercase;
+    padding: 10px;
+}
+
+#content {
+    background-image: url(./images/biryanipic.jpg);
+    background-size: cover;
+    color: white;
+    width: 56%;
+    float: left;
+    height: 600px;
+    padding: 7px 2%;
+}
+
+#sidemenu {
+
+    color: black;
+    width: 36%;
+    float: right;
+    padding: 0 2%;
+}
+
+#sidemenu ul {
+    margin: 0;
+    padding: 0;
+}
+
+#sidemenu li {
+    list-style-type: none;
+    display: block;
+    width: 100%;
+    padding: 5px;
+    background-color: rgb(241, 225, 193);
+}
+
+#sidemenu a {
+    text-decoration: none;
+    color: rgb(70, 58, 50);
+}
+
+/* #sidemenu li:hover {
+    background-color: rgb(205, 236, 92);
+} */
+
+.round{
+    
+    border-radius: 15px 50px 30px 5px;
+    background-color:wheat;
+    padding:25px;
+
+}
+.formcontainer{
+    border-radius: 10px;
+    width: 1080px;
+    margin: auto;
+    background-color: rgb(197, 170, 129);
+    padding: 60px;
+
+}
+
+#homeMenu{
+    padding:1px;
+}
+
+.main-container {
+    background:linear-gradient(#F75E40,#9b321c);
+
+}
+
+.button{
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.footer-container {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.clearfix {
+    clear: both;
+
+}
+
